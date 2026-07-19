@@ -1,0 +1,11 @@
+import Link from 'next/link'
+import { Circle, Hash, MoreHorizontal, Shield, User } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { registrations } from '@/lib/dashboard-data'
+
+export function RecentRegistrations() {
+  return <Card><CardHeader className="flex-row items-center justify-between"><div><CardTitle>Nuevos registros</CardTitle><CardDescription>Usuarios incorporados recientemente</CardDescription></div><Link href="/admin/miembros"><Button variant="outline" size="sm">Ver usuarios</Button></Link></CardHeader><CardContent className="overflow-x-auto px-0"><Table><TableHeader><TableRow className="bg-muted/30"><TableHead className="pl-6"><div className="flex items-center gap-1.5"><Hash className="size-3.5 text-muted-foreground" />ID</div></TableHead><TableHead><div className="flex items-center gap-1.5"><User className="size-3.5 text-muted-foreground" />Nombre</div></TableHead><TableHead><div className="flex items-center gap-1.5"><Shield className="size-3.5 text-muted-foreground" />Plan</div></TableHead><TableHead><div className="flex items-center gap-1.5"><Circle className="size-3 text-muted-foreground" />Estado</div></TableHead><TableHead><span className="sr-only">Acciones</span></TableHead></TableRow></TableHeader><TableBody>{registrations.map(user => <TableRow key={user.id} className="group"><TableCell className="pl-6 font-mono text-xs font-medium">{user.id}</TableCell><TableCell><p className="font-medium">{user.name}</p><p className="text-xs text-muted-foreground">{user.email}</p></TableCell><TableCell>{user.plan}</TableCell><TableCell><Badge variant={user.status === 'Activo' ? 'default' : 'secondary'} className="gap-1.5 pl-1.5"><span className={`size-1.5 rounded-full ${user.status === 'Activo' ? 'bg-primary' : 'bg-amber-400'}`} />{user.status}</Badge></TableCell><TableCell><Button variant="ghost" size="icon-sm" aria-label={`Opciones de ${user.name}`}><MoreHorizontal /></Button></TableCell></TableRow>)}</TableBody></Table></CardContent></Card>
+}
