@@ -1,0 +1,124 @@
+---
+import Icon from './Icon.astro';
+
+const steps = [
+  {
+    number: '01',
+    title: 'Elige tu objetivo',
+    description: 'Pérdida de grasa, ganancia muscular, mantenimiento o mejora del rendimiento. Selecciona lo que mejor se adapte a ti.',
+    icon: 'target' as const,
+  },
+  {
+    number: '02',
+    title: 'Encuentra ejercicios',
+    description: 'Explora nuestro catálogo con más de 1.300 ejercicios. Filtra por grupo muscular, equipo o nivel de dificultad.',
+    icon: 'workout' as const,
+  },
+  {
+    number: '03',
+    title: 'Aprende la técnica',
+    description: 'Cada ejercicio incluye animaciones, instrucciones paso a paso y músculos trabajados para que entrenes correctamente.',
+    icon: 'education' as const,
+  },
+  {
+    number: '04',
+    title: 'Calcula tu plan',
+    description: 'Usa nuestras calculadoras gratuitas de IMC, calorías, macronutrientes y zonas de ritmo cardíaco.',
+    icon: 'lightning' as const,
+  },
+];
+---
+
+<section class="section how-it-works">
+  <div class="container">
+    <div class="hiw-header">
+      <span class="section-label">Cómo funciona</span>
+      <h2>Tu camino fitness en 4 pasos</h2>
+    </div>
+
+    <div class="hiw-grid">
+      {steps.map((step, i) => (
+        <div class="hiw-step">
+          <div class="hiw-number">{step.number}</div>
+          <div class="hiw-icon">
+            <Icon name={step.icon} size={28} strokeWidth={2} />
+          </div>
+          <h3>{step.title}</h3>
+          <p>{step.description}</p>
+          {i < steps.length - 1 && <div class="hiw-connector" aria-hidden="true"></div>}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hiw-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .hiw-header h2 {
+    margin: 0.5rem 0 0;
+  }
+  .hiw-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    position: relative;
+  }
+  .hiw-step {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    position: relative;
+  }
+  .hiw-number {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(34, 197, 94, 0.15);
+    margin-bottom: 0.5rem;
+  }
+  .hiw-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 1rem;
+    border-radius: 14px;
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hiw-step h3 {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+    color: #ffffff;
+  }
+  .hiw-step p {
+    font-size: 0.9rem;
+    color: rgb(var(--gray));
+    margin: 0;
+    line-height: 1.5;
+  }
+  .hiw-connector {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .hiw-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 60px;
+      right: -0.5rem;
+      width: 1rem;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(34, 197, 94, 0.3), transparent);
+    }
+  }
+  @media (max-width: 880px) {
+    .hiw-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .hiw-grid { grid-template-columns: 1fr; }
+  }
+</style>

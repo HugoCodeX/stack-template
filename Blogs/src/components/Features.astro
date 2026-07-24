@@ -1,0 +1,112 @@
+---
+import { FEATURES } from '../consts';
+import Icon from './Icon.astro';
+---
+
+<section class="section features">
+  <div class="container">
+    <div class="features-header">
+      <span class="section-label">Lo que ofrecemos</span>
+      <h2>Todo lo que necesitas<br/>para tu transformación</h2>
+    </div>
+    <div class="features-grid">
+      {FEATURES.map((feature) => (
+        <article class="feature-card">
+          <div class="feature-icon">
+            <Icon name={feature.key} size={28} strokeWidth={2} />
+          </div>
+          <h3>{feature.title}</h3>
+          <p>{feature.description}</p>
+          <span class="feature-arrow">
+            <Icon name="arrow-up-right" size={18} strokeWidth={2} />
+          </span>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .features-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .features-header h2 {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .feature-card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(34, 197, 94, 0.1) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .feature-card:hover {
+    border-color: rgba(34, 197, 94, 0.4);
+    transform: translateY(-4px);
+  }
+  .feature-card:hover::before {
+    opacity: 1;
+  }
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+  .feature-card h3 {
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+    position: relative;
+  }
+  .feature-card p {
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.6;
+    position: relative;
+  }
+  .feature-arrow {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--bg-elevated);
+    color: rgb(var(--gray));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+  .feature-card:hover .feature-arrow {
+    background: var(--accent);
+    color: #000;
+    transform: rotate(-15deg);
+  }
+  @media (max-width: 880px) {
+    .features-grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,83 @@
+---
+import Icon from './Icon.astro';
+---
+
+<section class="section cta">
+  <div class="container">
+    <div class="cta-content">
+      <span class="section-label">Comienza Hoy</span>
+      <h2>Tu mejor versión<br/>está a un paso</h2>
+      <p>Únete a nuestra comunidad y recibe contenido exclusivo sobre entrenamiento, nutrición y bienestar.</p>
+      <form class="cta-form">
+        <input type="email" placeholder="tu@email.com" required aria-label="Tu correo electrónico" />
+        <button type="submit" class="btn btn-primary">
+          Suscribirme
+          <Icon name="arrow-right" size={16} strokeWidth={2.5} />
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    text-align: center;
+  }
+  .cta-content {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 24px;
+    padding: 3.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top, rgba(34, 197, 94, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cta-content > * {
+    position: relative;
+  }
+  .cta-content h2 {
+    margin-bottom: 1rem;
+  }
+  .cta-content p {
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+  }
+  .cta-form {
+    display: flex;
+    gap: 0.75rem;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .cta-form input {
+    flex: 1;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    border: 1px solid var(--bg-elevated);
+    background: var(--bg);
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .cta-form input:focus {
+    border-color: var(--accent);
+  }
+  .cta-form input::placeholder {
+    color: rgb(var(--gray));
+  }
+  @media (max-width: 480px) {
+    .cta-content { padding: 2.5rem 1.5rem; }
+    .cta-form {
+      flex-direction: column;
+    }
+  }
+</style>

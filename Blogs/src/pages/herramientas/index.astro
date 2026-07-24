@@ -1,0 +1,291 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import Icon from '../../components/Icon.astro';
+import { SITE_TITLE } from '../../consts';
+
+const title = 'Herramientas Fitness Gratuitas';
+const description = 'Calculadoras y herramientas gratuitas para tu salud y entrenamiento: IMC, calorías, macronutrientes y más.';
+const seoDescription = 'Calculadoras fitness gratuitas: IMC, metabolismo basal, macronutrientes y más. Herramientas online para acompañar tu entrenamiento y nutrición.';
+
+interface Tool {
+  href: string;
+  title: string;
+  description: string;
+  icon: 'bmi' | 'calories' | 'macros' | 'pace' | 'water' | 'bodyfat';
+  status: 'available' | 'coming-soon';
+}
+
+const tools: Tool[] = [
+  {
+    href: '/herramientas/calculadora-imc',
+    title: 'Calculadora de IMC',
+    description: 'Calcula tu Índice de Masa Corporal, conoce tu categoría de peso y tu rango saludable recomendado.',
+    icon: 'bmi',
+    status: 'available',
+  },
+  {
+    href: '#',
+    title: 'Calculadora de Calorías',
+    description: 'Conoce tu gasto calórico diario y tu metabolismo basal según tu actividad física.',
+    icon: 'calories',
+    status: 'coming-soon',
+  },
+  {
+    href: '#',
+    title: 'Calculadora de Macronutrientes',
+    description: 'Distribuye proteínas, carbohidratos y grasas según tu objetivo: pérdida de grasa o ganancia muscular.',
+    icon: 'macros',
+    status: 'coming-soon',
+  },
+  {
+    href: '#',
+    title: 'Calculadora de Ritmo Cardíaco',
+    description: 'Determina tus zonas de entrenamiento (cardio, quema grasa, umbral anaeróbico) para correr o rodar.',
+    icon: 'pace',
+    status: 'coming-soon',
+  },
+  {
+    href: '#',
+    title: 'Calculadora de Hidratación',
+    description: 'Descubre cuánta agua deberías beber al día según tu peso y nivel de actividad.',
+    icon: 'water',
+    status: 'coming-soon',
+  },
+  {
+    href: '#',
+    title: 'Calculadora de Grasa Corporal',
+    description: 'Método de la Marina de EE. UU. para estimar tu porcentaje de grasa corporal con una cinta métrica.',
+    icon: 'bodyfat',
+    status: 'coming-soon',
+  },
+];
+---
+
+<html lang="es">
+  <head>
+    <BaseHead
+      title={`${title} — ${SITE_TITLE}`}
+      description={description}
+      seoDescription={seoDescription}
+    />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section class="tools-header">
+        <span class="section-label">Herramientas</span>
+        <h1>Calculadoras Fitness<br/><span class="gradient-text">Gratis</span></h1>
+        <p>
+          Herramientas prácticas y gratuitas para acompañar tu entrenamiento, controlar tu nutrición y conocer mejor tu cuerpo.
+        </p>
+      </section>
+
+      <div class="tools-grid">
+        {tools.map((tool) => (
+          tool.status === 'available' ? (
+            <a href={tool.href} class="tool-card">
+              <div class="tool-icon">
+                {tool.icon === 'bmi' && <Icon name="scale" size={28} strokeWidth={2} />}
+                {tool.icon === 'calories' && <Icon name="fire" size={28} strokeWidth={2} />}
+                {tool.icon === 'macros' && <Icon name="workout" size={28} strokeWidth={2} />}
+                {tool.icon === 'pace' && <Icon name="heart" size={28} strokeWidth={2} />}
+                {tool.icon === 'water' && <Icon name="nutrition" size={28} strokeWidth={2} />}
+                {tool.icon === 'bodyfat' && <Icon name="target" size={28} strokeWidth={2} />}
+              </div>
+              <h3>{tool.title}</h3>
+              <p>{tool.description}</p>
+              <span class="tool-cta">
+                Usar herramienta
+                <Icon name="arrow-up-right" size={16} strokeWidth={2.5} />
+              </span>
+            </a>
+          ) : (
+            <div class="tool-card coming-soon">
+              <span class="badge">Próximamente</span>
+              <div class="tool-icon">
+                {tool.icon === 'bmi' && <Icon name="scale" size={28} strokeWidth={2} />}
+                {tool.icon === 'calories' && <Icon name="fire" size={28} strokeWidth={2} />}
+                {tool.icon === 'macros' && <Icon name="workout" size={28} strokeWidth={2} />}
+                {tool.icon === 'pace' && <Icon name="heart" size={28} strokeWidth={2} />}
+                {tool.icon === 'water' && <Icon name="nutrition" size={28} strokeWidth={2} />}
+                {tool.icon === 'bodyfat' && <Icon name="target" size={28} strokeWidth={2} />}
+              </div>
+              <h3>{tool.title}</h3>
+              <p>{tool.description}</p>
+              <span class="tool-cta disabled">En desarrollo</span>
+            </div>
+          )
+        ))}
+      </div>
+
+      <section class="tools-cta">
+        <div class="cta-content">
+          <h2>¿Falta alguna herramienta?</h2>
+          <p>Dinos qué calculadora te gustaría ver aquí. Estamos añadiendo nuevas herramientas cada mes.</p>
+          <a href="/contact" class="btn btn-primary">
+            Sugerir herramienta
+            <Icon name="arrow-right" size={16} strokeWidth={2.5} />
+          </a>
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .tools-header {
+    margin-bottom: 3rem;
+    max-width: 600px;
+  }
+  .tools-header h1 {
+    margin-bottom: 0.75rem;
+  }
+  .gradient-text {
+    background: linear-gradient(135deg, #22c55e 0%, #4ade80 50%, #86efac 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .tools-header p {
+    font-size: 1.1rem;
+    color: rgb(var(--gray));
+    line-height: 1.6;
+  }
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+  .tool-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 16px;
+    padding: 2rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    overflow: hidden;
+  }
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(34, 197, 94, 0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .tool-card:hover {
+    border-color: rgba(34, 197, 94, 0.4);
+    transform: translateY(-4px);
+  }
+  .tool-card:hover::before {
+    opacity: 1;
+  }
+  .tool-card.coming-soon {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+  .tool-card.coming-soon:hover {
+    transform: none;
+    border-color: var(--bg-elevated);
+  }
+  .badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem 0.6rem;
+    background: var(--bg-elevated);
+    color: rgb(var(--gray));
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 100px;
+    z-index: 1;
+  }
+  .tool-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+  .tool-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    color: #ffffff;
+    position: relative;
+  }
+  .tool-card p {
+    font-size: 0.9rem;
+    margin: 0 0 1.25rem 0;
+    line-height: 1.55;
+    color: rgb(var(--gray));
+    flex: 1;
+    position: relative;
+  }
+  .tool-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    font-weight: 600;
+    position: relative;
+    transition: gap 0.2s;
+  }
+  .tool-card:hover .tool-cta {
+    gap: 0.7rem;
+  }
+  .tool-cta.disabled {
+    color: rgb(var(--gray));
+  }
+  .tools-cta {
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .tools-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top, rgba(34, 197, 94, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .tools-cta > * {
+    position: relative;
+  }
+  .tools-cta h2 {
+    margin-bottom: 0.75rem;
+  }
+  .tools-cta p {
+    max-width: 480px;
+    margin: 0 auto 1.5rem;
+    font-size: 1rem;
+  }
+  @media (max-width: 880px) {
+    .tools-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .tools-grid { grid-template-columns: 1fr; }
+  }
+</style>

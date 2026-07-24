@@ -1,0 +1,442 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import Icon from '../../components/Icon.astro';
+import {
+  getAllExercises,
+  getRelatedExercises,
+  getMediaUrl,
+  getCategoryLabel,
+  getEquipmentLabel,
+  getMuscleGroupLabel,
+  getTargetLabel,
+  type Exercise,
+} from '../../lib/exercises';
+import { SITE_TITLE } from '../../consts';
+
+export async function getStaticPaths() {
+  const exercises = getAllExercises();
+  return exercises.map((ex) => ({
+    params: { id: ex.id },
+    props: { exercise: ex },
+  }));
+}
+
+interface Props {
+  exercise: Exercise;
+}
+
+const { exercise } = Astro.props;
+const gifUrl = getMediaUrl(exercise.gif_url, 'gif');
+const imageUrl = getMediaUrl(exercise.image, 'image');
+const steps = exercise.instruction_steps.es ?? [];
+const instructions = exercise.instructions.es ?? '';
+
+const categoryLabel = getCategoryLabel(exercise.category);
+const equipmentLabel = getEquipmentLabel(exercise.equipment);
+const targetLabel = getTargetLabel(exercise.target);
+const muscleGroupLabel = getMuscleGroupLabel(exercise.muscle_group);
+
+const secondaryLabels = exercise.secondary_muscles.map((m) => ({
+  raw: m,
+  label: getMuscleGroupLabel(m),
+}));
+
+const related = getRelatedExercises(exercise.id, exercise.category, 6);
+---
+
+<html lang="es">
+  <head>
+    <BaseHead
+      title={`${exercise.name} — Ejercicio de ${categoryLabel} | ${SITE_TITLE}`}
+      description={`Aprende a hacer ${exercise.name}: instrucciones paso a paso en español, músculos trabajados (${targetLabel}) y técnica correcta. Ejercicio de ${categoryLabel} con ${equipmentLabel}.`}
+      seoDescription={`${exercise.name}: instrucciones paso a paso en español, músculos trabajados (${targetLabel}), equipo (${equipmentLabel}) y técnica correcta. Ejercicio de ${categoryLabel}.`}
+      category={categoryLabel}
+      tags={[targetLabel, muscleGroupLabel, equipmentLabel, categoryLabel]}
+      type="article"
+    />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <article class="exercise-article">
+        <nav class="breadcrumbs" aria-label="Migas de pan">
+          <a href="/ejercicios">Ejercicios</a>
+          <Icon name="chevron-right" size={12} strokeWidth={2.5} />
+          <a href={`/ejercicios?category=${encodeURIComponent(exercise.category)}`}>{categoryLabel}</a>
+          <Icon name="chevron-right" size={12} strokeWidth={2.5} />
+          <span>{exercise.name}</span>
+        </nav>
+
+        <header class="exercise-header">
+          <div class="header-content">
+            <span class="section-label">Ejercicio de {categoryLabel}</span>
+            <h1>{exercise.name}</h1>
+            <div class="meta-grid">
+              <div class="meta-item">
+                <span class="meta-label">Músculo objetivo</span>
+                <span class="meta-value primary">{targetLabel}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Grupo muscular</span>
+                <span class="meta-value">{muscleGroupLabel}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Equipo</span>
+                <span class="meta-value">{equipmentLabel}</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <section class="exercise-media">
+          {gifUrl ? (
+            <div class="media-frame">
+              <img src={gifUrl} alt={`Animación de ${exercise.name}`} class="exercise-gif" width="500" height="500" loading="eager" decoding="async" />
+              <div class="media-badge">
+                <span>Animación</span>
+              </div>
+            </div>
+          ) : imageUrl ? (
+            <div class="media-frame">
+              <img src={imageUrl} alt={exercise.name} width="500" height="500" loading="eager" />
+            </div>
+          ) : (
+            <div class="media-frame empty">Sin animación disponible</div>
+          )}
+          <p class="media-attribution">{exercise.attribution}</p>
+        </section>
+
+        <section class="exercise-instructions">
+          <div class="section-head">
+            <h2>Cómo hacerlo</h2>
+            <span class="step-count">{steps.length} pasos</span>
+          </div>
+          {steps.length > 0 ? (
+            <ol class="steps-list">
+              {steps.map((step) => <li>{step}</li>)}
+            </ol>
+          ) : (
+            <p class="instructions-text">{instructions}</p>
+          )}
+        </section>
+
+        {secondaryLabels.length > 0 && (
+          <section class="exercise-secondary">
+            <h2>Músculos secundarios</h2>
+            <p class="section-sub">Músculos que también trabajan durante este ejercicio:</p>
+            <div class="muscle-tags">
+              {secondaryLabels.map((m) => <span class="muscle-tag">{m.label}</span>)}
+            </div>
+          </section>
+        )}
+
+        {related.length > 0 && (
+          <section class="exercise-related">
+            <div class="section-head">
+              <h2>Ejercicios similares</h2>
+              <a href={`/ejercicios?category=${encodeURIComponent(exercise.category)}`} class="see-all">
+                Ver todos
+                <Icon name="arrow-right" size={14} strokeWidth={2.5} />
+              </a>
+            </div>
+            <div class="related-grid">
+              {related.map((ex) => (
+                <a href={`/ejercicios/${ex.id}/`} class="related-card">
+                  <div class="related-image">
+                    <img src={ex.image} alt={ex.name} loading="lazy" width="180" height="180" />
+                  </div>
+                  <div class="related-body">
+                    <span class="related-target">{ex.targetLabel}</span>
+                    <h3>{ex.name}</h3>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .exercise-article {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: rgb(var(--gray));
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .breadcrumbs a {
+    color: rgb(var(--gray-dark));
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .breadcrumbs a:hover {
+    color: var(--accent);
+  }
+  .breadcrumbs span:last-child {
+    color: #ffffff;
+  }
+  .exercise-header {
+    margin-bottom: 2rem;
+  }
+  .header-content {
+    text-align: left;
+  }
+  .exercise-header h1 {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    margin: 0.75rem 0 1.5rem;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 12px;
+  }
+  .meta-label {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgb(var(--gray));
+  }
+  .meta-value {
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  .meta-value.primary {
+    color: var(--accent);
+  }
+  .exercise-media {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  .media-frame {
+    position: relative;
+    display: inline-block;
+    max-width: 500px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+  .media-frame.empty {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(var(--gray));
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    box-shadow: none;
+  }
+  .exercise-gif {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    display: block;
+  }
+  .media-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.35rem 0.75rem;
+    background: rgba(34, 197, 94, 0.95);
+    color: #000;
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    border-radius: 100px;
+  }
+  .media-attribution {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: rgb(var(--gray));
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .section-head h2 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  .step-count {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  .section-sub {
+    color: rgb(var(--gray));
+    margin-bottom: 1rem;
+  }
+  .exercise-instructions,
+  .exercise-secondary {
+    margin-bottom: 3rem;
+  }
+  .steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: step;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .steps-list li {
+    position: relative;
+    padding: 1.1rem 1.25rem 1.1rem 4rem;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 12px;
+    line-height: 1.6;
+    color: rgb(var(--gray-dark));
+    counter-increment: step;
+    transition: border-color 0.2s;
+  }
+  .steps-list li:hover {
+    border-color: rgba(34, 197, 94, 0.3);
+  }
+  .steps-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .instructions-text {
+    line-height: 1.7;
+    color: rgb(var(--gray-dark));
+    padding: 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 12px;
+  }
+  .muscle-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .muscle-tag {
+    padding: 0.5rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    color: rgb(var(--gray-dark));
+    border-radius: 100px;
+    font-size: 0.85rem;
+    text-transform: capitalize;
+  }
+  .see-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .see-all:hover {
+    text-decoration: underline;
+  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+  }
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .related-card:hover {
+    border-color: rgba(34, 197, 94, 0.3);
+    transform: translateY(-2px);
+  }
+  .related-image {
+    aspect-ratio: 1;
+    background: #fff;
+  }
+  .related-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0;
+  }
+  .related-body {
+    padding: 0.75rem;
+  }
+  .related-target {
+    font-family: var(--font-heading);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .related-body h3 {
+    font-size: 0.85rem;
+    margin: 0.25rem 0 0;
+    color: #ffffff;
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: var(--font-body);
+    font-weight: 500;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  @media (max-width: 720px) {
+    .meta-grid { grid-template-columns: 1fr; }
+    .related-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

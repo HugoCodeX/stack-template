@@ -1,0 +1,170 @@
+---
+import { STATS } from '../consts';
+import Icon from './Icon.astro';
+---
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-bg" aria-hidden="true"></div>
+  <div class="container hero-content">
+    <span class="section-label">
+      <Icon name="fire" size={14} strokeWidth={2.5} />
+      Fitness & Bienestar
+    </span>
+    <h1>
+      Transforma<br/>
+      <span class="gradient-text">tu Cuerpo</span>
+    </h1>
+    <p class="hero-subtitle">
+      Rutinas efectivas, nutrición inteligente y el estilo de vida que necesitas para alcanzar tu mejor versión.
+    </p>
+    <div class="hero-actions">
+      <a href="/blog" class="btn btn-primary">
+        Explorar Blog
+        <Icon name="arrow-right" size={16} strokeWidth={2.5} />
+      </a>
+      <a href="/about" class="btn btn-outline">Conócenos</a>
+    </div>
+    <div class="hero-stats">
+      {STATS.map((stat) => (
+        <div class="stat">
+          <span class="stat-value">{stat.value}</span>
+          <span class="stat-label">{stat.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+  <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+  <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 6rem 0 4rem;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(34, 197, 94, 0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(249, 115, 22, 0.05) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, #0d0d0d 100%);
+    z-index: 0;
+  }
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 70%);
+    z-index: 0;
+  }
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-orb-1 {
+    width: 400px;
+    height: 400px;
+    background: rgba(34, 197, 94, 0.15);
+    top: 10%;
+    right: -100px;
+    animation: float 8s ease-in-out infinite;
+  }
+  .hero-orb-2 {
+    width: 300px;
+    height: 300px;
+    background: rgba(249, 115, 22, 0.1);
+    bottom: 10%;
+    left: -50px;
+    animation: float 10s ease-in-out infinite reverse;
+  }
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(20px, -20px); }
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+  }
+  .hero .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 11vw, 6.5rem);
+    line-height: 0.95;
+    margin-bottom: 1.5rem;
+  }
+  .gradient-text {
+    background: linear-gradient(135deg, #22c55e 0%, #4ade80 50%, #86efac 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .hero-subtitle {
+    font-size: 1.2rem;
+    color: rgb(var(--gray));
+    max-width: 560px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 3.5rem;
+    flex-wrap: wrap;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+  }
+  .stat-value {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.85rem;
+    color: rgb(var(--gray));
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+  }
+  @media (max-width: 720px) {
+    .hero { min-height: 80vh; padding: 5rem 0 3rem; }
+    .hero h1 { font-size: clamp(2.5rem, 14vw, 4rem); }
+    .hero-subtitle { font-size: 1rem; }
+    .hero-actions { flex-direction: column; }
+    .hero-actions .btn { justify-content: center; }
+    .hero-stats { gap: 1.5rem; }
+    .stat-value { font-size: 1.75rem; }
+  }
+</style>

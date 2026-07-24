@@ -1,0 +1,396 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import Icon from '../../components/Icon.astro';
+import { SITE_TITLE } from '../../consts';
+
+const title = 'Calculadora de Calorías (TMB y TDEE)';
+const description = 'Calcula tu Tasa Metabólica Basal y tu gasto calórico diario total según Mifflin-St Jeor y tu nivel de actividad.';
+const seoDescription = 'Calculadora gratuita de calorías: Tasa Metabólica Basal (TMB) y Gasto Calórico Diario Total (TDEE). Usa la fórmula Mifflin-St Jeor con tu nivel de actividad física.';
+
+const category = 'Nutrición';
+const tags = ['calorías', 'metabolismo basal', 'TDEE', 'Mifflin-St Jeor', 'dieta'];
+---
+
+<html lang="es">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      seoDescription={seoDescription}
+      category={category}
+      tags={tags}
+      type="article"
+    />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: 'Calculadora de Calorías',
+      applicationCategory: 'HealthApplication',
+      operatingSystem: 'Any',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+      description: seoDescription,
+    })} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <article class="tool-article">
+        <nav class="breadcrumbs" aria-label="Migas de pan">
+          <a href="/herramientas">Herramientas</a>
+          <Icon name="chevron-right" size={12} strokeWidth={2.5} />
+          <span>Calculadora de Calorías</span>
+        </nav>
+
+        <header class="tool-header">
+          <span class="section-label">Herramienta Gratuita</span>
+          <h1>Calculadora de Calorías</h1>
+          <p class="tool-description">
+            Conoce tu Tasa Metabólica Basal (TMB) y tu Gasto Calórico Diario Total (TDEE) según la fórmula Mifflin-St Jeor y tu nivel de actividad física.
+          </p>
+        </header>
+
+        <section class="calculator">
+          <form id="cal-form" class="calc-form" novalidate>
+            <fieldset>
+              <legend>Datos personales</legend>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="age">Edad</label>
+                  <div class="input-suffix">
+                    <input type="number" id="age" name="age" min="10" max="100" required placeholder="30" inputmode="numeric" />
+                    <span class="suffix">años</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <span class="form-label">Sexo biológico</span>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" name="sex" value="male" checked />
+                      <span>Hombre</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" name="sex" value="female" />
+                      <span>Mujer</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="unit-toggle" role="tablist" aria-label="Sistema de unidades">
+                <button type="button" class="unit-btn active" data-unit="metric" role="tab" aria-selected="true">Métrico (kg, cm)</button>
+                <button type="button" class="unit-btn" data-unit="imperial" role="tab" aria-selected="false">Imperial (lb, in)</button>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="height">Altura</label>
+                  <div class="input-suffix">
+                    <input type="number" id="height" name="height" step="0.01" min="0" required placeholder="170" inputmode="decimal" />
+                    <span class="suffix" data-metric="cm" data-imperial="in">cm</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="weight">Peso</label>
+                  <div class="input-suffix">
+                    <input type="number" id="weight" name="weight" step="0.01" min="0" required placeholder="70" inputmode="decimal" />
+                    <span class="suffix" data-metric="kg" data-imperial="lb">kg</span>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Nivel de actividad</legend>
+              <div class="activity-grid">
+                <label class="activity-option">
+                  <input type="radio" name="activity" value="1.2" required />
+                  <div class="activity-content">
+                    <strong>Sedentario</strong>
+                    <span>Poco o ningún ejercicio</span>
+                  </div>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="activity" value="1.375" checked />
+                  <div class="activity-content">
+                    <strong>Ligero</strong>
+                    <span>1-3 días/semana</span>
+                  </div>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="activity" value="1.55" />
+                  <div class="activity-content">
+                    <strong>Moderado</strong>
+                    <span>3-5 días/semana</span>
+                  </div>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="activity" value="1.725" />
+                  <div class="activity-content">
+                    <strong>Intenso</strong>
+                    <span>6-7 días/semana</span>
+                  </div>
+                </label>
+                <label class="activity-option">
+                  <input type="radio" name="activity" value="1.9" />
+                  <div class="activity-content">
+                    <strong>Muy intenso</strong>
+                    <span>2x al día o trabajo físico</span>
+                  </div>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Objetivo</legend>
+              <div class="goal-grid">
+                <label class="goal-option">
+                  <input type="radio" name="goal" value="-0.20" />
+                  <div class="goal-content">
+                    <strong>Pérdida agresiva</strong>
+                    <span>−20% calorías</span>
+                  </div>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="goal" value="-0.10" checked />
+                  <div class="goal-content">
+                    <strong>Pérdida moderada</strong>
+                    <span>−10% calorías</span>
+                  </div>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="goal" value="0" />
+                  <div class="goal-content">
+                    <strong>Mantener peso</strong>
+                    <span>Sin déficit ni superávit</span>
+                  </div>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="goal" value="0.10" />
+                  <div class="goal-content">
+                    <strong>Ganar peso</strong>
+                    <span>+10% calorías</span>
+                  </div>
+                </label>
+                <label class="goal-option">
+                  <input type="radio" name="goal" value="0.20" />
+                  <div class="goal-content">
+                    <strong>Ganar rápido</strong>
+                    <span>+20% calorías</span>
+                  </div>
+                </label>
+              </div>
+            </fieldset>
+
+            <button type="submit" class="btn btn-primary calc-submit">
+              Calcular mis calorías
+              <Icon name="arrow-right" size={16} strokeWidth={2.5} />
+            </button>
+          </form>
+
+          <div id="cal-result" class="imc-result" hidden aria-live="polite">
+            <div class="result-header">
+              <span class="result-label">Tu metabolismo</span>
+            </div>
+
+            <div class="cal-cards">
+              <div class="cal-card">
+                <span class="cal-card-label">Tasa Metabólica Basal</span>
+                <span class="cal-card-value" id="bmr-value">0</span>
+                <span class="cal-card-unit">kcal/día</span>
+                <p class="cal-card-desc">Calorías que quemas en reposo absoluto.</p>
+              </div>
+              <div class="cal-card primary">
+                <span class="cal-card-label">TDEE (mantenimiento)</span>
+                <span class="cal-card-value" id="tdee-value">0</span>
+                <span class="cal-card-unit">kcal/día</span>
+                <p class="cal-card-desc">Gasto total según tu nivel de actividad.</p>
+              </div>
+              <div class="cal-card">
+                <span class="cal-card-label" id="goal-label">Para tu objetivo</span>
+                <span class="cal-card-value" id="goal-value">0</span>
+                <span class="cal-card-unit">kcal/día</span>
+                <p class="cal-card-desc" id="goal-desc">Ajustado según tu meta.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="tool-info">
+          <h2>¿Qué es la TMB?</h2>
+          <p>
+            La Tasa Metabólica Basal (TMB) es la cantidad mínima de calorías que tu cuerpo necesita para mantener funciones vitales (respiración, circulación, temperatura corporal) en reposo absoluto.
+          </p>
+
+          <h2>¿Qué es el TDEE?</h2>
+          <p>
+            El Gasto Calórico Diario Total (TDEE) es la TMB multiplicada por un factor de actividad. Representa las calorías totales que quemas al día, incluyendo ejercicio y movimiento cotidiano.
+          </p>
+
+          <h2>Fórmula Mifflin-St Jeor</h2>
+          <p>Esta herramienta usa la fórmula Mifflin-St Jeor, considerada una de las más precisas:</p>
+          <pre><code>Hombres: TMB = 10 × peso(kg) + 6.25 × altura(cm) − 5 × edad + 5
+Mujeres: TMB = 10 × peso(kg) + 6.25 × altura(cm) − 5 × edad − 161</code></pre>
+
+          <h2>Limitaciones</h2>
+          <p>
+            El cálculo es una estimación. No considera composición corporal (masa muscular vs. grasa), genética, metabolismo individual ni condiciones médicas. Para un plan nutricional personalizado, consulta con un profesional de la salud.
+          </p>
+        </section>
+
+        {tags && (
+          <footer class="post-tags">
+            <span class="tags-label">Etiquetas:</span>
+            <ul>
+              {tags.map((tag) => (
+                <li><a href={`/blog?tag=${tag.toLowerCase().replace(/\s+/g, '-')}`}>#{tag}</a></li>
+              ))}
+            </ul>
+          </footer>
+        )}
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<script>
+  const form = document.getElementById('cal-form') as HTMLFormElement | null;
+  const result = document.getElementById('cal-result') as HTMLDivElement | null;
+  const bmrValue = document.getElementById('bmr-value') as HTMLSpanElement | null;
+  const tdeeValue = document.getElementById('tdee-value') as HTMLSpanElement | null;
+  const goalValue = document.getElementById('goal-value') as HTMLSpanElement | null;
+  const goalLabel = document.getElementById('goal-label') as HTMLSpanElement | null;
+  const goalDesc = document.getElementById('goal-desc') as HTMLParagraphElement | null;
+  const unitButtons = document.querySelectorAll<HTMLButtonElement>('.unit-btn');
+  const suffixSpans = document.querySelectorAll<HTMLSpanElement>('.suffix');
+
+  let currentUnit: 'metric' | 'imperial' = 'metric';
+
+  unitButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const unit = btn.dataset.unit as 'metric' | 'imperial';
+      if (unit === currentUnit) return;
+      currentUnit = unit;
+      unitButtons.forEach((b) => {
+        b.classList.toggle('active', b === btn);
+        b.setAttribute('aria-selected', String(b === btn));
+      });
+      suffixSpans.forEach((s) => { s.textContent = s.dataset[unit] ?? ''; });
+      result?.setAttribute('hidden', '');
+    });
+  });
+
+  const goalLabels: Record<string, { label: string; desc: string }> = {
+    '-0.20': { label: 'Pérdida agresiva de peso', desc: 'Déficit calórico fuerte. Puede incluir pérdida de masa muscular.' },
+    '-0.10': { label: 'Pérdida moderada de peso', desc: 'Déficit calórico sostenible para perder grasa gradualmente.' },
+    '0': { label: 'Mantenimiento de peso', desc: 'Calorías justas para mantener tu peso actual.' },
+    '0.10': { label: 'Ganancia moderada de peso', desc: 'Superávit calórico controlado para ganar peso.' },
+    '0.20': { label: 'Ganancia rápida de peso', desc: 'Superávit calórico fuerte. Mayor riesgo de ganar grasa.' },
+  };
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const age = parseFloat(data.get('age') as string);
+    const sex = data.get('sex') as string;
+    const height = parseFloat(data.get('height') as string);
+    const weight = parseFloat(data.get('weight') as string);
+    const activity = parseFloat(data.get('activity') as string);
+    const goal = parseFloat(data.get('goal') as string);
+
+    if (!age || !height || !weight || !activity) {
+      result?.setAttribute('hidden', '');
+      return;
+    }
+
+    let heightCm: number, weightKg: number;
+    if (currentUnit === 'imperial') {
+      heightCm = height * 2.54;
+      weightKg = weight * 0.453592;
+    } else {
+      heightCm = height;
+      weightKg = weight;
+    }
+
+    const bmr = sex === 'male'
+      ? 10 * weightKg + 6.25 * heightCm - 5 * age + 5
+      : 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
+
+    const tdee = bmr * activity;
+    const goalCalories = tdee * (1 + goal);
+
+    if (bmrValue) bmrValue.textContent = Math.round(bmr).toLocaleString('es');
+    if (tdeeValue) tdeeValue.textContent = Math.round(tdee).toLocaleString('es');
+    if (goalValue) goalValue.textContent = Math.round(goalCalories).toLocaleString('es');
+    const goalKey = goal.toFixed(2);
+    if (goalLabel) goalLabel.textContent = goalLabels[goalKey]?.label ?? 'Objetivo';
+    if (goalDesc) goalDesc.textContent = goalLabels[goalKey]?.desc ?? '';
+
+    result?.removeAttribute('hidden');
+    result?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+</script>
+
+<style>
+  .tool-article { max-width: 760px; margin: 0 auto; }
+  .breadcrumbs { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgb(var(--gray)); margin-bottom: 1.5rem; }
+  .breadcrumbs a { color: var(--accent); text-decoration: none; }
+  .breadcrumbs a:hover { text-decoration: underline; }
+  .tool-header { margin-bottom: 2.5rem; }
+  .tool-header h1 { margin-bottom: 0.75rem; }
+  .tool-description { font-size: 1.1rem; color: rgb(var(--gray)); line-height: 1.6; max-width: 560px; }
+  .calculator { background: var(--bg-card); border: 1px solid var(--bg-elevated); border-radius: 20px; padding: 2.5rem; margin-bottom: 3rem; }
+  .calc-form fieldset { border: none; padding: 0; margin: 0 0 1.5rem; }
+  .calc-form fieldset:last-of-type { margin-bottom: 0; }
+  .calc-form legend { font-family: var(--font-heading); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 1.25rem; padding: 0; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-label, .form-group label { font-family: var(--font-heading); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgb(var(--gray-dark)); }
+  .radio-group { display: flex; gap: 0.5rem; height: 100%; }
+  .radio-option, .activity-option, .goal-option { flex: 1; cursor: pointer; }
+  .radio-option input, .activity-option input, .goal-option input { position: absolute; opacity: 0; pointer-events: none; }
+  .radio-option span, .activity-content, .goal-content { display: flex; align-items: center; justify-content: center; padding: 0.75rem 1rem; background: var(--bg); border: 1px solid var(--bg-elevated); border-radius: 10px; color: rgb(var(--gray-dark)); font-size: 0.9rem; transition: all 0.2s; text-align: center; }
+  .radio-option input:checked + span, .activity-option:has(input:checked) .activity-content, .goal-option:has(input:checked) .goal-content { background: rgba(34, 197, 94, 0.1); border-color: var(--accent); color: #ffffff; }
+  .activity-grid, .goal-grid { display: grid; gap: 0.5rem; }
+  .activity-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+  .goal-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .activity-content, .goal-content { flex-direction: column; align-items: flex-start; text-align: left; padding: 0.85rem 1rem; }
+  .activity-content strong, .goal-content strong { font-size: 0.9rem; color: #ffffff; }
+  .activity-content span, .goal-content span { font-size: 0.75rem; color: rgb(var(--gray)); margin-top: 0.15rem; }
+  .unit-toggle { display: inline-flex; background: var(--bg); border: 1px solid var(--bg-elevated); border-radius: 10px; padding: 4px; margin-bottom: 1.5rem; }
+  .unit-btn { padding: 0.5rem 1rem; background: transparent; border: none; color: rgb(var(--gray)); font-family: var(--font-heading); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; border-radius: 6px; transition: all 0.2s; }
+  .unit-btn.active { background: var(--accent); color: #000; }
+  .input-suffix { position: relative; }
+  .form-group input[type="number"] { width: 100%; padding: 0.85rem 3.5rem 0.85rem 1rem; border-radius: 10px; border: 1px solid var(--bg-elevated); background: var(--bg); color: #ffffff; font-family: var(--font-body); font-size: 1.1rem; font-weight: 600; outline: none; transition: border-color 0.2s; }
+  .form-group input:focus { border-color: var(--accent); }
+  .form-group input::placeholder { color: rgb(var(--gray)); font-weight: 400; }
+  .input-suffix .suffix { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: rgb(var(--gray)); font-family: var(--font-heading); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; pointer-events: none; }
+  .calc-submit { width: 100%; justify-content: center; padding: 0.9rem 1.5rem; font-size: 1rem; margin-top: 1rem; }
+  .imc-result { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--bg-elevated); }
+  .result-header { text-align: center; margin-bottom: 1.5rem; }
+  .result-label { font-family: var(--font-heading); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgb(var(--gray)); }
+  .cal-cards { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+  .cal-card { padding: 1.5rem; background: var(--bg); border: 1px solid var(--bg-elevated); border-radius: 12px; display: flex; flex-direction: column; gap: 0.25rem; }
+  .cal-card.primary { background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.3); }
+  .cal-card-label { font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgb(var(--gray)); }
+  .cal-card-value { font-family: var(--font-heading); font-size: 2.5rem; font-weight: 700; color: #ffffff; line-height: 1; }
+  .cal-card.primary .cal-card-value { color: var(--accent); }
+  .cal-card-unit { font-size: 0.8rem; color: rgb(var(--gray)); text-transform: lowercase; }
+  .cal-card-desc { font-size: 0.85rem; color: rgb(var(--gray)); margin: 0.5rem 0 0; }
+  .tool-info { color: rgb(var(--gray-dark)); line-height: 1.8; }
+  .tool-info h2 { margin-top: 2.5rem; margin-bottom: 1rem; }
+  .tool-info p { margin-bottom: 1.25rem; }
+  .tool-info pre { background: var(--bg); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--bg-elevated); overflow-x: auto; }
+  .tool-info code { font-size: 0.85rem; color: rgb(var(--gray-dark)); }
+  .post-tags { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--bg-elevated); display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .tags-label { font-family: var(--font-heading); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgb(var(--gray)); }
+  .post-tags ul { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 0; }
+  .post-tags a { display: inline-block; padding: 0.4rem 0.9rem; background: var(--bg-card); border: 1px solid var(--bg-elevated); color: rgb(var(--gray-dark)); border-radius: 100px; font-size: 0.85rem; text-decoration: none; transition: all 0.2s; }
+  .post-tags a:hover { border-color: var(--accent); color: var(--accent); background: rgba(34, 197, 94, 0.08); }
+  @media (max-width: 720px) { .calculator { padding: 1.5rem; } .form-row { grid-template-columns: 1fr; } .activity-grid, .goal-grid { grid-template-columns: 1fr; } .cal-card-value { font-size: 2rem; } }
+</style>

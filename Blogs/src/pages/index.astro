@@ -1,0 +1,46 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import AdSlot from '../components/AdSlot.astro';
+import TrustBar from '../components/TrustBar.astro';
+import Hero from '../components/Hero.astro';
+import Features from '../components/Features.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import FeaturedExercises from '../components/FeaturedExercises.astro';
+import FeaturedPosts from '../components/FeaturedPosts.astro';
+import Cta from '../components/Cta.astro';
+import FAQ from '../components/FAQ.astro';
+import { getCollection } from 'astro:content';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <BaseHead
+      title={`${SITE_TITLE} — Blog de Fitness, Ejercicios y Calculadoras`}
+      description={SITE_DESCRIPTION}
+      seoDescription="Vigorize es tu blog de fitness: más de 1.300 ejercicios con animaciones, calculadoras gratuitas (IMC, calorías, macros) y artículos sobre entrenamiento, nutrición y bienestar."
+    />
+  </head>
+  <body>
+    <Header />
+    <Hero />
+    <TrustBar />
+    <main>
+      <Features />
+      <HowItWorks />
+      <FeaturedExercises />
+      <AdSlot slot="1111111111" format="auto" label="Publicidad" />
+      <FeaturedPosts posts={posts} />
+      <Cta />
+      <FAQ />
+    </main>
+    <Footer />
+  </body>
+</html>

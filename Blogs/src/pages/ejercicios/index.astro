@@ -1,0 +1,665 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import Icon from '../../components/Icon.astro';
+import {
+  getAllCardData,
+  getCategories,
+  getEquipment,
+  getTargets,
+  getCategoryStats,
+  type ExerciseCardData,
+} from '../../lib/exercises';
+import { SITE_TITLE } from '../../consts';
+
+const title = 'Catálogo de Ejercicios de Fitness';
+const description = 'Explora más de 1.300 ejercicios con animaciones, instrucciones paso a paso en español y filtros por grupo muscular, equipo y objetivo.';
+const seoDescription = 'Catálogo de más de 1.300 ejercicios de fitness con animaciones, instrucciones paso a paso en español y filtros por músculo, equipo y objetivo muscular.';
+
+const all = getAllCardData();
+const categories = getCategories();
+const equipment = getEquipment();
+const targets = getTargets();
+const categoryStats = getCategoryStats();
+const featured = all.slice(0, 12);
+
+const dataJson = JSON.stringify(all);
+---
+
+<html lang="es">
+  <head>
+    <BaseHead
+      title={`${title} — ${SITE_TITLE}`}
+      description={description}
+      seoDescription={seoDescription}
+    />
+  </head>
+  <body>
+    <Header />
+
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="container hero-content">
+        <span class="section-label">
+          <Icon name="fire" size={14} strokeWidth={2.5} />
+          Catálogo completo
+        </span>
+        <h1>
+          <span class="gradient-text">{all.length.toLocaleString('es')}</span> ejercicios<br/>
+          para entrenar
+        </h1>
+        <p>
+          Animaciones, instrucciones paso a paso en español y filtros por grupo muscular, equipo y objetivo. Encuentra el ejercicio perfecto para tu rutina.
+        </p>
+        <div class="hero-search">
+          <Icon name="target" size={20} />
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Buscar ejercicio (ej. sentadilla, press banca, dominadas...)"
+            aria-label="Buscar ejercicio"
+          />
+          <kbd>Enter</kbd>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <section class="categories-strip" aria-label="Categorías populares">
+        <div class="container">
+          <div class="strip-header">
+            <h2>Explora por categoría</h2>
+          </div>
+          <div class="category-pills">
+            <button type="button" class="category-pill active" data-category="">
+              <span class="pill-label">Todos</span>
+              <span class="pill-count">{all.length.toLocaleString('es')}</span>
+            </button>
+            {categoryStats.map((c) => (
+              <button type="button" class="category-pill" data-category={c.key}>
+                <span class="pill-label">{c.label}</span>
+                <span class="pill-count">{c.count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="filters" aria-label="Filtros">
+        <div class="container">
+          <div class="filters-row">
+            <label class="filter-group">
+              <span class="filter-label">Equipo</span>
+              <div class="select-wrap">
+                <select id="filter-equipment">
+                  <option value="">Todos los equipos</option>
+                  {equipment.map((e) => <option value={e}>{e === 'body weight' ? 'Peso corporal' : e === 'dumbbell' ? 'Mancuerna' : e === 'barbell' ? 'Barra' : e === 'cable' ? 'Polea' : e === 'leverage machine' ? 'Máquina' : e === 'band' ? 'Banda' : e === 'smith machine' ? 'Smith' : e === 'kettlebell' ? 'Pesa rusa' : e === 'weighted' ? 'Con peso' : e === 'stability ball' ? 'Balón' : e === 'ez barbell' ? 'Barra Z' : e === 'rope' ? 'Cuerda' : e === 'medicine ball' ? 'Balón medicinal' : e === 'wheel roller' ? 'Rueda' : e === 'treadmill' ? 'Cinta' : e === 'bosu ball' ? 'BOSU' : e === 'stationary bike' ? 'Bici' : e === 'elliptical machine' ? 'Elíptica' : e === 'rowing machine' ? 'Remo' : e === 'stepmill machine' ? 'Escalera' : e === 'skierg machine' ? 'Ski' : e === 'trap bar' ? 'Hexagonal' : e === 'sled machine' ? 'Trineo' : e === 'upper body ergometer' ? 'Ergómetro' : e === 'hammer' ? 'Martillo' : e === 'roller' ? 'Rodillo' : e === 'tire' ? 'Llanta' : 'Otro'}</option>)}
+                </select>
+                <Icon name="chevron-right" size={16} strokeWidth={2.5} />
+              </div>
+            </label>
+            <label class="filter-group">
+              <span class="filter-label">Músculo objetivo</span>
+              <div class="select-wrap">
+                <select id="filter-target">
+                  <option value="">Todos los músculos</option>
+                  {targets.map((t) => <option value={t}>{t === 'abductors' ? 'Abductores' : t === 'abs' ? 'Abdominales' : t === 'adductors' ? 'Aductores' : t === 'biceps' ? 'Bíceps' : t === 'calves' ? 'Gemelos' : t === 'cardiovascular system' ? 'Cardiovascular' : t === 'delts' ? 'Deltoides' : t === 'forearms' ? 'Antebrazos' : t === 'glutes' ? 'Glúteos' : t === 'hamstrings' ? 'Isquios' : t === 'hip flexors' ? 'Flexores cadera' : t === 'lats' ? 'Dorsales' : t === 'levator scapulae' ? 'Elev. escápula' : t === 'pectorals' ? 'Pectorales' : t === 'quads' ? 'Cuádriceps' : t === 'serratus anterior' ? 'Serrato' : t === 'spine' ? 'Espalda' : t === 'traps' ? 'Trapecios' : t === 'triceps' ? 'Tríceps' : t === 'upper back' ? 'Espalda alta' : t}</option>)}
+                </select>
+                <Icon name="chevron-right" size={16} strokeWidth={2.5} />
+              </div>
+            </label>
+            <button type="button" id="reset-filters" class="btn-reset">
+              <Icon name="close" size={14} strokeWidth={2.5} />
+              Limpiar
+            </button>
+          </div>
+          <div class="results-bar">
+            <span class="results-count" id="results-count">
+              Mostrando <strong>{all.length.toLocaleString('es')}</strong> ejercicios
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section class="exercises-section container">
+        <div class="exercises-grid" id="exercises-grid">
+          {featured.map((ex) => (
+            <a href={`/ejercicios/${ex.id}/`} class="exercise-card" data-category={ex.category}>
+              <div class="card-media">
+                <img src={ex.image} alt={ex.name} loading="lazy" width="180" height="180" />
+                <div class="card-overlay">
+                  <span class="card-play">Ver ejercicio</span>
+                </div>
+              </div>
+              <div class="card-body">
+                <span class="card-target">{ex.targetLabel}</span>
+                <h3>{ex.name}</h3>
+                <div class="card-meta">
+                  <span class="card-tag">{ex.categoryLabel}</span>
+                  <span class="card-dot">·</span>
+                  <span class="card-equipment">{ex.equipmentLabel}</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div id="load-more-wrap" class="load-more-wrap" hidden>
+          <button type="button" id="load-more" class="btn btn-outline">
+            Ver más ejercicios
+            <Icon name="arrow-right" size={16} strokeWidth={2.5} />
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+
+    <script define:vars={{ dataJson, totalCount: all.length }}>
+      const all = JSON.parse(dataJson);
+      const grid = document.getElementById('exercises-grid');
+      const search = document.getElementById('search-input');
+      const filterEquipment = document.getElementById('filter-equipment');
+      const filterTarget = document.getElementById('filter-target');
+      const resetBtn = document.getElementById('reset-filters');
+      const resultsCount = document.getElementById('results-count');
+      const pills = document.querySelectorAll('.category-pill');
+      const loadMoreWrap = document.getElementById('load-more-wrap');
+      const loadMoreBtn = document.getElementById('load-more');
+
+      const PAGE_SIZE = 24;
+      let visibleCount = 0;
+      let currentFiltered = [];
+
+      function escapeHtml(s) {
+        return s.replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      }
+
+      function cardHtml(ex) {
+        return `
+          <a href="/ejercicios/${ex.id}/" class="exercise-card" data-category="${escapeHtml(ex.category)}">
+            <div class="card-media">
+              <img src="${ex.image}" alt="${escapeHtml(ex.name)}" loading="lazy" width="180" height="180" />
+              <div class="card-overlay">
+                <span class="card-play">Ver ejercicio</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <span class="card-target">${escapeHtml(ex.targetLabel)}</span>
+              <h3>${escapeHtml(ex.name)}</h3>
+              <div class="card-meta">
+                <span class="card-tag">${escapeHtml(ex.categoryLabel)}</span>
+                <span class="card-dot">·</span>
+                <span class="card-equipment">${escapeHtml(ex.equipmentLabel)}</span>
+              </div>
+            </div>
+          </a>
+        `;
+      }
+
+      function render(showLoadMore) {
+        if (!grid) return;
+        const slice = showLoadMore ? currentFiltered.slice(0, visibleCount) : currentFiltered;
+        if (slice.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state">
+              <h3>Sin resultados</h3>
+              <p>No se encontraron ejercicios con esos filtros. Prueba a cambiar la categoría, el equipo o el músculo objetivo.</p>
+            </div>
+          `;
+          if (loadMoreWrap) loadMoreWrap.hidden = true;
+          return;
+        }
+        grid.innerHTML = slice.map(cardHtml).join('');
+        if (loadMoreWrap) {
+          loadMoreWrap.hidden = !showLoadMore || visibleCount >= currentFiltered.length;
+        }
+      }
+
+      function applyFilters() {
+        const term = (search?.value || '').toLowerCase().trim();
+        const cat = document.querySelector('.category-pill.active')?.getAttribute('data-category') || '';
+        const eq = filterEquipment?.value || '';
+        const tgt = filterTarget?.value || '';
+
+        currentFiltered = all.filter((ex) => {
+          if (cat && ex.category !== cat) return false;
+          if (eq && ex.equipment !== eq) return false;
+          if (tgt && ex.target !== tgt) return false;
+          if (term) {
+            const haystack = `${ex.name} ${ex.target} ${ex.targetLabel} ${ex.categoryLabel} ${ex.equipmentLabel} ${ex.equipment}`.toLowerCase();
+            if (!haystack.includes(term)) return false;
+          }
+          return true;
+        });
+
+        visibleCount = PAGE_SIZE;
+        render(true);
+
+        if (resultsCount) {
+          const n = currentFiltered.length;
+          resultsCount.innerHTML = n === totalCount
+            ? `Mostrando <strong>${n.toLocaleString('es')}</strong> ejercicios`
+            : `Mostrando <strong>${n.toLocaleString('es')}</strong> de ${totalCount.toLocaleString('es')} ejercicios`;
+        }
+      }
+
+      let timeout;
+      function debouncedApply() {
+        clearTimeout(timeout);
+        timeout = setTimeout(applyFilters, 120);
+      }
+
+      search?.addEventListener('input', debouncedApply);
+      search?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') e.preventDefault();
+      });
+      filterEquipment?.addEventListener('change', applyFilters);
+      filterTarget?.addEventListener('change', applyFilters);
+
+      pills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+          pills.forEach((p) => p.classList.remove('active'));
+          pill.classList.add('active');
+          applyFilters();
+        });
+      });
+
+      resetBtn?.addEventListener('click', () => {
+        if (search) search.value = '';
+        if (filterEquipment) filterEquipment.value = '';
+        if (filterTarget) filterTarget.value = '';
+        pills.forEach((p) => p.classList.remove('active'));
+        const allPill = document.querySelector('.category-pill[data-category=""]');
+        if (allPill) allPill.classList.add('active');
+        applyFilters();
+      });
+
+      loadMoreBtn?.addEventListener('click', () => {
+        visibleCount += PAGE_SIZE;
+        render(true);
+      });
+    </script>
+
+    <style is:global>
+      .empty-state {
+        grid-column: 1 / -1;
+        padding: 3.5rem 1.5rem;
+        text-align: center;
+        background: var(--bg-card);
+        border: 1px solid var(--bg-elevated);
+        border-radius: 16px;
+        color: rgb(var(--gray));
+      }
+      .empty-state h3 {
+        margin-bottom: 0.5rem;
+        color: #ffffff;
+      }
+      .empty-state p {
+        max-width: 460px;
+        margin: 0 auto;
+        font-size: 0.95rem;
+      }
+    </style>
+  </body>
+</html>
+
+<script is:inline>
+  // (Translations handled inline in select options)
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: auto;
+    padding: 5rem 0 3rem;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--bg) 0%, #0d0d0d 100%);
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(34, 197, 94, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 100%, rgba(249, 115, 22, 0.05) 0%, transparent 60%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .hero .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    font-size: 0.8rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    line-height: 1;
+    margin-bottom: 1.25rem;
+  }
+  .gradient-text {
+    background: linear-gradient(135deg, #22c55e 0%, #4ade80 50%, #86efac 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .hero p {
+    font-size: 1.1rem;
+    color: rgb(var(--gray));
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-search {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem 0.75rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 14px;
+    max-width: 600px;
+    margin: 0 auto;
+    color: rgb(var(--gray));
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .hero-search:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+  }
+  .hero-search input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    padding: 0.5rem 0;
+  }
+  .hero-search input::placeholder {
+    color: rgb(var(--gray));
+  }
+  .hero-search kbd {
+    padding: 0.25rem 0.5rem;
+    background: var(--bg);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: rgb(var(--gray));
+  }
+  .categories-strip {
+    background: var(--bg);
+    border-bottom: 1px solid var(--bg-elevated);
+    padding: 2rem 0;
+  }
+  .strip-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .category-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .category-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 100px;
+    color: rgb(var(--gray-dark));
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .category-pill:hover {
+    border-color: var(--accent);
+    color: #ffffff;
+    background: rgba(34, 197, 94, 0.05);
+  }
+  .category-pill.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+  }
+  .pill-count {
+    padding: 0.1rem 0.5rem;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+  .filters {
+    padding: 1.5rem 0 0.5rem;
+  }
+  .filters-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+  .filter-group {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .filter-label {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgb(var(--gray));
+    padding-left: 0.25rem;
+  }
+  .select-wrap {
+    position: relative;
+  }
+  .select-wrap select {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 10px;
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+  .select-wrap select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .select-wrap :global(svg) {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    pointer-events: none;
+    color: rgb(var(--gray));
+  }
+  .btn-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: 1px solid var(--bg-elevated);
+    color: rgb(var(--gray-dark));
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+    height: fit-content;
+  }
+  .btn-reset:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+  .results-bar {
+    margin-top: 1.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .results-count {
+    font-size: 0.95rem;
+    color: rgb(var(--gray));
+  }
+  .results-count strong {
+    color: #ffffff;
+  }
+  .exercises-section {
+    padding: 1.5rem 1.5rem 4rem;
+  }
+  .exercises-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+  .exercise-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .exercise-card:hover {
+    border-color: rgba(34, 197, 94, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+  .card-media {
+    position: relative;
+    aspect-ratio: 1;
+    background: #ffffff;
+    overflow: hidden;
+  }
+  .card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0;
+    transition: transform 0.4s;
+  }
+  .exercise-card:hover .card-media img {
+    transform: scale(1.05);
+  }
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .exercise-card:hover .card-overlay {
+    opacity: 1;
+  }
+  .card-play {
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    padding: 0.4rem 0.85rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 100px;
+    backdrop-filter: blur(4px);
+  }
+  .card-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .card-target {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .card-body h3 {
+    font-size: 0.95rem;
+    margin: 0;
+    color: #ffffff;
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: var(--font-body);
+    font-weight: 500;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: rgb(var(--gray));
+    flex-wrap: wrap;
+  }
+  .card-tag {
+    text-transform: capitalize;
+  }
+  .card-equipment {
+    text-transform: capitalize;
+  }
+  .card-dot {
+    color: var(--bg-elevated);
+  }
+  .load-more-wrap {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+  .load-more-wrap .btn {
+    display: inline-flex;
+  }
+  @media (max-width: 720px) {
+    .hero { padding: 3rem 0 2rem; }
+    .filters-row { flex-direction: column; align-items: stretch; }
+    .filter-group { min-width: 0; }
+    .exercises-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+    .category-pills { gap: 0.4rem; }
+    .category-pill { font-size: 0.75rem; padding: 0.5rem 0.85rem; }
+    .hero-search kbd { display: none; }
+  }
+</style>

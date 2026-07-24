@@ -1,0 +1,174 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import Icon from '../components/Icon.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <BaseHead
+      title={`Nosotros — Quiénes Somos | ${SITE_TITLE}`}
+      description="Conoce al equipo detrás de Vigorize: nuestra misión, valores y compromiso con el fitness accesible, basado en evidencia y sin compromiso de registro."
+      seoDescription="Vigorize es un blog de fitness fundado por entusiastas del entrenamiento y la nutrición. Nuestra misión es hacer accesible el conocimiento sobre ejercicio, alimentación y hábitos saludables a través de contenido gratuito, calculadoras y un catálogo de más de 1.300 ejercicios."
+    />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section class="about-header">
+        <span class="section-label">Nosotros</span>
+        <h1>Nuestra Misión</h1>
+        <p>Ayudarte a alcanzar tu mejor versión a través del fitness, la nutrición y hábitos saludables.</p>
+      </section>
+
+      <div class="about-content">
+        <article class="about-card">
+          <h2>¿Quiénes Somos?</h2>
+          <p>Somos un equipo de entrenadores, nutricionistas y entusiastas del fitness apasionados por compartir conocimiento que transforma vidas. Creemos que el fitness no es solo levantar pesas, es un estilo de vida.</p>
+          <p>Nuestro objetivo es hacer que la información de calidad sobre entrenamiento y nutrición sea accesible para todos, sin importar tu nivel de experiencia.</p>
+        </article>
+
+        <article class="about-card">
+          <h2>Nuestros Valores</h2>
+          <div class="values-grid">
+            <div class="value-item">
+              <span class="value-icon">
+                <Icon name="target" size={28} strokeWidth={2} />
+              </span>
+              <h3>Resultados Reales</h3>
+              <p>Todo nuestro contenido está basado en ciencia y experiencia práctica.</p>
+            </div>
+            <div class="value-item">
+              <span class="value-icon">
+                <Icon name="community" size={28} strokeWidth={2} />
+              </span>
+              <h3>Comunidad</h3>
+              <p>Creemos en el poder de entrenar juntos y apoyarnos mutuamente.</p>
+            </div>
+            <div class="value-item">
+              <span class="value-icon">
+                <Icon name="education" size={28} strokeWidth={2} />
+              </span>
+              <h3>Educación</h3>
+              <p>Empoderamos con conocimiento para que tomes el control de tu salud.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="about-card">
+          <h2>¿Qué Encontrarás?</h2>
+          <ul class="check-list">
+            <li><span class="check-icon"><Icon name="check" size={16} strokeWidth={3} /></span> Rutinas de entrenamiento para todos los niveles</li>
+            <li><span class="check-icon"><Icon name="check" size={16} strokeWidth={3} /></span> Guías de nutrición y recetas saludables</li>
+            <li><span class="check-icon"><Icon name="check" size={16} strokeWidth={3} /></span> Consejos de recuperación y bienestar</li>
+            <li><span class="check-icon"><Icon name="check" size={16} strokeWidth={3} /></span> Reviews de equipamiento y suplementos</li>
+            <li><span class="check-icon"><Icon name="check" size={16} strokeWidth={3} /></span> Historias de transformación inspiradoras</li>
+          </ul>
+        </article>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .about-header {
+    margin-bottom: 3rem;
+    max-width: 600px;
+  }
+  .about-header h1 {
+    margin-bottom: 0.75rem;
+  }
+  .about-header p {
+    font-size: 1.1rem;
+    color: rgb(var(--gray));
+  }
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 800px;
+  }
+  .about-card {
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+  .about-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .about-card p {
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+  .about-card p:last-child {
+    margin-bottom: 0;
+  }
+  .check-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .check-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: rgb(var(--gray-dark));
+    line-height: 1.5;
+  }
+  .check-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  .value-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--bg);
+    border-radius: 12px;
+    border: 1px solid var(--bg-elevated);
+  }
+  .value-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+  .value-item h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .value-item p {
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.5;
+  }
+  @media (max-width: 720px) {
+    .values-grid { grid-template-columns: 1fr; }
+  }
+</style>

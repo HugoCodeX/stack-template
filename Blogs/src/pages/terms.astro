@@ -1,0 +1,63 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <BaseHead title={`Términos del Servicio — ${SITE_TITLE}`} description="Términos y condiciones de uso de Vigorize." />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <article class="legal">
+        <h1>Términos del Servicio</h1>
+        <p class="legal-date">Última actualización: 24 de julio de 2026</p>
+
+        <section>
+          <h2>1. Aceptación de los Términos</h2>
+          <p>Al acceder y utilizar Vigorize, aceptas cumplir con estos términos del servicio. Si no estás de acuerdo con alguna parte de estos términos, no debes utilizar nuestro sitio.</p>
+        </section>
+
+        <section>
+          <h2>2. Contenido del Sitio</h2>
+          <p>Todo el contenido publicado en Vigorize, incluyendo artículos, rutinas, guías nutricionales y material multimedia, tiene fines informativos y educativos. El contenido no sustituye el consejo médico profesional. Siempre consulta con un profesional de la salud antes de comenzar cualquier programa de ejercicios o dieta.</p>
+        </section>
+
+        <section>
+          <h2>3. Propiedad Intelectual</h2>
+          <p>Todo el contenido original en Vigorize está protegido por derechos de autor. No puedes reproducir, distribuir o modificar nuestro contenido sin nuestro permiso expreso por escrito.</p>
+        </section>
+
+        <section>
+          <h2>4. Suscripciones y Newsletters</h2>
+          <p>Al suscribirte a nuestro newsletter, aceptas recibir correos electrónicos periódicos con contenido relacionado al fitness y bienestar. Puedes cancelar tu suscripción en cualquier momento haciendo clic en el enlace de "cancelar suscripción" al final de cada correo.</p>
+        </section>
+
+        <section>
+          <h2>5. Limitación de Responsabilidad</h2>
+          <p>Vigorize no se hace responsable por lesiones, daños o pérdidas que puedan resultar del uso de la información proporcionada en este sitio. El uso de cualquier información es bajo tu propio riesgo.</p>
+        </section>
+
+        <section>
+          <h2>6. Enlaces a Terceros</h2>
+          <p>Nuestro sitio puede contener enlaces a sitios web de terceros. No tenemos control sobre el contenido o prácticas de estos sitios y no asumimos responsabilidad por ellos.</p>
+        </section>
+
+        <section>
+          <h2>7. Cambios en los Términos</h2>
+          <p>Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación en el sitio.</p>
+        </section>
+
+        <section>
+          <h2>8. Contacto</h2>
+          <p>Para cualquier pregunta sobre estos términos, contáctanos a través de nuestra <a href="/contact">página de contacto</a>.</p>
+        </section>
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>

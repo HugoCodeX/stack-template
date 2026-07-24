@@ -1,0 +1,181 @@
+---
+import { SITE_TITLE } from '../consts';
+import Icon from './Icon.astro';
+const today = new Date();
+---
+
+<footer>
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="footer-logo">
+        <span class="logo-mark" aria-hidden="true">
+          <Icon name="lightning" size={18} strokeWidth={2.5} />
+        </span>
+        <span>{SITE_TITLE}</span>
+      </a>
+      <p>Transforma tu cuerpo, transforma tu vida. Tu mejor versión te espera.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Navegación</h4>
+      <a href="/">Inicio</a>
+      <a href="/blog">Blog</a>
+      <a href="/about">Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+    <div class="footer-links">
+      <h4>Legal</h4>
+      <a href="/privacy">Política de Privacidad</a>
+      <a href="/terms">Términos del Servicio</a>
+    </div>
+    <div class="footer-social">
+      <h4>Síguenos</h4>
+      <div class="social-icons">
+        <a href="#" aria-label="Instagram">
+          <Icon name="instagram" size={18} />
+        </a>
+        <a href="#" aria-label="YouTube">
+          <Icon name="youtube" size={18} />
+        </a>
+        <a href="#" aria-label="Twitter / X">
+          <Icon name="twitter" size={18} />
+        </a>
+        <a href="#" aria-label="TikTok">
+          <Icon name="tiktok" size={18} />
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; {today.getFullYear()} {SITE_TITLE}. Todos los derechos reservados.</p>
+    <div class="footer-bottom-links">
+      <a href="/privacy">Privacidad</a>
+      <a href="/terms">Términos</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    background: var(--bg-card);
+    border-top: 1px solid var(--bg-elevated);
+    padding: 4rem 0 0;
+    margin-top: 4rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+  .footer-logo {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .footer-logo:hover {
+    opacity: 1;
+  }
+  .logo-mark {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--accent) 0%, #16a34a 100%);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+  }
+  .footer-brand p {
+    font-size: 0.9rem;
+    color: rgb(var(--gray));
+    max-width: 300px;
+  }
+  .footer-links h4,
+  .footer-social h4 {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  .footer-links a {
+    display: block;
+    color: rgb(var(--gray));
+    font-size: 0.9rem;
+    padding: 0.25rem 0;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover {
+    color: #ffffff;
+    opacity: 1;
+  }
+  .social-icons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: var(--bg-elevated);
+    color: rgb(var(--gray));
+    transition: all 0.2s;
+  }
+  .social-icons a:hover {
+    background: var(--accent);
+    color: #000;
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+  .footer-bottom {
+    margin-top: 3rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--bg-elevated);
+    text-align: center;
+  }
+  .footer-bottom p {
+    font-size: 0.8rem;
+    color: rgb(var(--gray));
+    margin: 0 0 0.75rem 0;
+  }
+  .footer-bottom-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .footer-bottom-links a {
+    font-size: 0.8rem;
+    color: rgb(var(--gray));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+  }
+  .footer-bottom-links a:hover {
+    color: #ffffff;
+    opacity: 1;
+  }
+  @media (max-width: 880px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .footer-brand { grid-column: span 2; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+    .footer-brand { grid-column: span 1; }
+  }
+</style>

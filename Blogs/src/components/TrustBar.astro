@@ -1,0 +1,54 @@
+---
+import Icon from './Icon.astro';
+
+const trustItems = [
+  { icon: 'education' as const, label: 'Contenido basado en evidencia' },
+  { icon: 'community' as const, label: 'Comunidad fitness activa' },
+  { icon: 'target' as const, label: 'Resultados medibles' },
+  { icon: 'lightning' as const, label: '100% gratuito, sin registro' },
+];
+---
+
+<section class="trust-bar">
+  <div class="container">
+    <div class="trust-grid">
+      {trustItems.map((item) => (
+        <div class="trust-item">
+          <Icon name={item.icon} size={20} strokeWidth={2} />
+          <span>{item.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .trust-bar {
+    background: var(--bg);
+    border-top: 1px solid var(--bg-elevated);
+    border-bottom: 1px solid var(--bg-elevated);
+    padding: 1.5rem 0;
+  }
+  .trust-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgb(var(--gray));
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .trust-item :global(svg) {
+    color: var(--accent);
+  }
+  @media (max-width: 720px) {
+    .trust-grid { gap: 1rem; }
+    .trust-item { font-size: 0.8rem; }
+  }
+</style>

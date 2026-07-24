@@ -1,0 +1,138 @@
+---
+import Icon from './Icon.astro';
+
+const faqs = [
+  {
+    question: '¿Qué es Vigorize?',
+    answer: 'Vigorize es un blog de fitness con catálogo de más de 1.300 ejercicios, calculadoras gratuitas y artículos sobre entrenamiento, nutrición y estilo de vida saludable.',
+  },
+  {
+    question: '¿Necesito registrarme para usar las calculadoras?',
+    answer: 'No. Todas las herramientas de Vigorize (IMC, calorías, macronutrientes, hidratación, grasa corporal y zonas de ritmo cardíaco) son gratuitas y funcionan directamente en el navegador sin registro.',
+  },
+  {
+    question: '¿Las recomendaciones reemplazan el consejo médico?',
+    answer: 'No. El contenido de Vigorize es informativo y educativo. Cada persona es distinta, por lo que recomendamos consultar con un profesional de la salud o un entrenador certificado antes de iniciar cualquier programa.',
+  },
+  {
+    question: '¿Con qué frecuencia publican artículos?',
+    answer: 'Publicamos nuevos artículos de forma regular sobre rutinas, nutrición, recuperación, suplementación y técnicas de entrenamiento. Puedes seguirnos en redes sociales o suscribirte al newsletter para no perderte nada.',
+  },
+  {
+    question: '¿Puedo sugerir un tema o herramienta?',
+    answer: 'Por supuesto. Escríbenos desde la página de contacto y evaluamos tu sugerencia para próximas actualizaciones.',
+  },
+];
+---
+
+<section class="section faq-section">
+  <div class="container">
+    <div class="faq-grid">
+      <div class="faq-header">
+        <span class="section-label">Preguntas frecuentes</span>
+        <h2>Resolvemos tus dudas</h2>
+        <p>Las respuestas a las preguntas más comunes sobre Vigorize, nuestras herramientas y el contenido que publicamos.</p>
+        <a href="/contact" class="btn btn-outline faq-cta">
+          ¿Otra pregunta? Escríbenos
+          <Icon name="arrow-right" size={16} strokeWidth={2.5} />
+        </a>
+      </div>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <details class="faq-item">
+            <summary>
+              <span>{faq.question}</span>
+              <Icon name="chevron-right" size={18} strokeWidth={2.5} />
+            </summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>('.faq-item').forEach((item) => {
+    item.addEventListener('toggle', () => {
+      if (item.open) {
+        document.querySelectorAll<HTMLDetailsElement>('.faq-item[open]').forEach((other) => {
+          if (other !== item) other.removeAttribute('open');
+        });
+      }
+    });
+  });
+</script>
+
+<style>
+  .faq-section {
+    background: var(--bg-card);
+    border-top: 1px solid var(--bg-elevated);
+    border-bottom: 1px solid var(--bg-elevated);
+  }
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .faq-header h2 {
+    margin: 0.5rem 0 1rem;
+  }
+  .faq-header p {
+    color: rgb(var(--gray));
+    margin-bottom: 1.5rem;
+  }
+  .faq-cta {
+    width: fit-content;
+  }
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .faq-item {
+    background: var(--bg);
+    border: 1px solid var(--bg-elevated);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .faq-item[open] {
+    border-color: var(--accent);
+  }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary :global(svg) {
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+  .faq-item[open] summary :global(svg) {
+    transform: rotate(90deg);
+  }
+  .faq-item p {
+    padding: 0 1.25rem 1.25rem;
+    margin: 0;
+    color: rgb(var(--gray-dark));
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+  @media (max-width: 880px) {
+    .faq-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+</style>
